@@ -1,0 +1,6 @@
+% layout 'default';
+% use strict;
+% use Data::Dumper;
+% my $sth = db->prepare("select * from books") or die "No";
+% $sth->execute();
+%= Dumper $sth->fetchrow_hashref(); 
