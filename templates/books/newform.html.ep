@@ -1,0 +1,8 @@
+% layout 'books';
+% use strict;
+% use Data::Dumper;
+%= tag 'h3', "New book"
+%= form_for insert => begin
+%= text_field 'name' 
+    %= submit_button 'Ok'
+% end

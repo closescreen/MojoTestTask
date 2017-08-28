@@ -1,32 +1,44 @@
 package MyApp::Controller::Books;
 use Mojo::Base 'Mojolicious::Controller';
+use MyApp::Model::Books;
+use Data::Dumper;
 
 sub index {
-  my $self = shift;
-  
-  
-  
-#  my $user = $self->param('user') || '';
-#  my $pass = $self->param('pass') || '';
-#  return $self->render unless $self->users->check($user, $pass);
-
-#  $self->session(user => $user);
-#  $self->flash(message => 'Thanks for logging in.');
-#  $self->redirect_to('protected');
-
+    my $self = shift;
+    my $sth  = $self->db->prepare("SELECT * FROM books");
+    $sth->execute();
+    $self->stash( booksdata => $sth );
+    $self->render( template => "/books/index" );
 }
 
-#sub logged_in {
-#  my $self = shift;
-#  return 1 if $self->session('user');
-#  $self->redirect_to('index');
-#  return undef;
-#}
+sub edit {
+    my $self    = shift;
+    my $books   = $self->books;                              # модель
+    my $book_id = $self->param("id");
+    my $book    = $books->get_book( $self->db, $book_id );
+    $self->stash( book => $book );
+    $self->render();
+}
 
-#sub logout {
-#  my $self = shift;
-#  $self->session(expires => 1);
-#  $self->redirect_to('index');
-#}
+sub newform {
+}
+
+sub insert {
+    my $self = shift;
+    $self->books->insert( $self->db, $self->param("name") );
+    $self->redirect_to( $self->url_for('books') );
+}
+
+sub update {
+    my $self = shift;
+    $self->books->update( $self->db, $self->param("id"), $self->param("name") );
+    $self->redirect_to( $self->url_for('books') );
+}
+
+sub delete {
+    my $self = shift;
+    $self->books->delete( $self->db, $self->param("id") );
+    $self->redirect_to( $self->url_for('books') );
+}
 
 1;

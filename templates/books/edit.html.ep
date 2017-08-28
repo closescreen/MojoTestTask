@@ -1,0 +1,24 @@
+% layout 'books';
+% use strict;
+% use Data::Dumper;
+%= tag 'h3', "New book"
+<table border=1>
+<tr>
+    <td> 
+        %= $book->{id} 
+    </td> 
+    <td> 
+        %= $book->{name}
+    </td>
+</tr>
+
+</table>
+
+
+<body>
+    %= form_for update => begin
+        %= hidden_field 'id' => $book->{id}
+        %= text_field 'name' => $book->{name}
+        %= submit_button 'Ok'
+    % end
+</body>

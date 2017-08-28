@@ -1,6 +1,21 @@
-% layout 'default';
-% use strict;
+% layout 'books';
 % use Data::Dumper;
-% my $sth = db->prepare("select * from books") or die "No";
-% $sth->execute();
-%= Dumper $sth->fetchrow_hashref(); 
+<table border=1>
+% while ( my $book = $booksdata->fetchrow_hashref() ){
+<tr>
+    <td> 
+        %= $book->{id} 
+    </td> 
+    <td> 
+        %= $book->{name}
+    </td>
+    <td>
+        %= link_to( "Edit" => url_for( 'book_edit_by_id', id=>$book->{id} )) 
+    </td>
+    <td>
+        %= link_to( "Delete" => url_for( 'book_delete_by_id', id=>$book->{id} ))
+    </td>
+</tr>
+% }
+</table>
+%= link_to( "New" => 'book_newform' )
